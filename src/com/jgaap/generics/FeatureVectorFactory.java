@@ -19,7 +19,7 @@ public class FeatureVectorFactory {
 	 * @param unknown The unknown event sets 
 	 * @return Pair of feature vector matrices
 	 */
-	public static Pair<Double[][], Double[][]> getFeatures(List<EventSet> known, List<EventSet> unknown) {
+	public static Pair<double[][], double[][]> getFeatures(List<EventSet> known, List<EventSet> unknown) {
 		Set<Event> vocab = new HashSet<Event>();
 		
 		// Add all events from known documents to the vocab list.
@@ -30,14 +30,14 @@ public class FeatureVectorFactory {
 		}
 		
 		// Add all events from unknown documents to the vocab list.
-		for(EventSet eventSet: unknown) {
+		for(EventSet eventSet : unknown) {
 			for(Event event : eventSet) {
 				vocab.add(event);
 			}
 		}
 		
 		// Construct the known vector
-		Double[][] knownSet = new Double[known.size()][vocab.size()];
+		double[][] knownSet = new double[known.size()][vocab.size()];
 		for(int i = 0; i < known.size(); i++) {
 			EventHistogram histogram = new EventHistogram(known.get(i));
 			int j = 0;
@@ -48,7 +48,7 @@ public class FeatureVectorFactory {
 		}
 		
 		// Construct the unknown vector
-		Double[][] unknownSet = new Double[unknown.size()][vocab.size()];
+		double[][] unknownSet = new double[unknown.size()][vocab.size()];
 		for(int i = 0; i < unknown.size(); i++) {
 			EventHistogram histogram = new EventHistogram(unknown.get(i));
 			int j = 0;
@@ -58,7 +58,7 @@ public class FeatureVectorFactory {
 			}
 		}
 		
-		return new Pair<Double[][], Double[][]>(knownSet, unknownSet);
+		return new Pair<double[][], double[][]>(knownSet, unknownSet);
 	}
 	
 	/**
@@ -67,7 +67,7 @@ public class FeatureVectorFactory {
 	 * @param unknown The unknown event sets 
 	 * @return Pair of feature vector matrices
 	 */
-	public static Pair<Double[][], Double[][]> getRelativeFeatures(List<EventSet> known, List<EventSet> unknown) {
+	public static Pair<double[][], double[][]> getRelativeFeatures(List<EventSet> known, List<EventSet> unknown) {
 		Set<Event> vocab = new HashSet<Event>();
 		
 		// Add all events from known documents to the vocab list.
@@ -85,7 +85,7 @@ public class FeatureVectorFactory {
 		}
 		
 		// Construct the known vector
-		Double[][] knownSet = new Double[known.size()][vocab.size()];
+		double[][] knownSet = new double[known.size()][vocab.size()];
 		for(int i = 0; i < known.size(); i++) {
 			EventHistogram histogram = new EventHistogram(known.get(i));
 			int j = 0;
@@ -96,7 +96,7 @@ public class FeatureVectorFactory {
 		}
 		
 		// Construct the unknown vector
-		Double[][] unknownSet = new Double[unknown.size()][vocab.size()];
+		double[][] unknownSet = new double[unknown.size()][vocab.size()];
 		for(int i = 0; i < unknown.size(); i++) {
 			EventHistogram histogram = new EventHistogram(unknown.get(i));
 			int j = 0;
@@ -106,7 +106,7 @@ public class FeatureVectorFactory {
 			}
 		}
 		
-		return new Pair<Double[][], Double[][]>(knownSet, unknownSet);
+		return new Pair<double[][], double[][]>(knownSet, unknownSet);
 	}
 	
 	/**
@@ -115,7 +115,7 @@ public class FeatureVectorFactory {
 	 * @param unknown The unknown event sets 
 	 * @return Pair of feature vector matrices
 	 */
-	public static Pair<Double[][], Double[][]> getNormalizedFeatures(List<EventSet> known, List<EventSet> unknown) {
+	public static Pair<double[][], double[][]> getNormalizedFeatures(List<EventSet> known, List<EventSet> unknown) {
 		Set<Event> vocab = new HashSet<Event>();
 		
 		// Add all events from known documents to the vocab list.
@@ -133,7 +133,7 @@ public class FeatureVectorFactory {
 		}
 		
 		// Construct the known vector
-		Double[][] knownSet = new Double[known.size()][vocab.size()];
+		double[][] knownSet = new double[known.size()][vocab.size()];
 		for(int i = 0; i < known.size(); i++) {
 			EventHistogram histogram = new EventHistogram(known.get(i));
 			int j = 0;
@@ -144,7 +144,7 @@ public class FeatureVectorFactory {
 		}
 		
 		// Construct the unknown vector
-		Double[][] unknownSet = new Double[unknown.size()][vocab.size()];
+		double[][] unknownSet = new double[unknown.size()][vocab.size()];
 		for(int i = 0; i < unknown.size(); i++) {
 			EventHistogram histogram = new EventHistogram(unknown.get(i));
 			int j = 0;
@@ -154,6 +154,6 @@ public class FeatureVectorFactory {
 			}
 		}
 		
-		return new Pair<Double[][], Double[][]>(knownSet, unknownSet);
+		return new Pair<double[][], double[][]>(knownSet, unknownSet);
 	}
 }
