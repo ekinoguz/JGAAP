@@ -28,5 +28,6 @@
 	<classpathentry kind="lib" path="lib/external/weka.jar"/>
 	<classpathentry kind="lib" path="lib/external/log4j-1.2.16.jar"/>
 	<classpathentry kind="lib" path="lib/external/WordSegment.jar"/>
+	<classpathentry kind="lib" path="/Users/jnoecker/git/JGAAP/lib/external/jscience-mathematics-5.0-20110719.131022-3-sources.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
