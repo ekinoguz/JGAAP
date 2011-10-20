@@ -41,7 +41,9 @@ import com.jgaap.generics.*;
  * Preprocessors and populate the GUI with them automatically, eliminating the
  * need to recompile JGAAP every time you add a new canonicizer.
  * 
- * @author Juola/Noecker
+ * @author Michael Ryan
+ * @author John Noecker
+ * @author Patrick Juola
  * @version 4.0
  */
 public class AutoPopulate {
@@ -83,7 +85,7 @@ public class AutoPopulate {
 				while ((ze = zip.getNextEntry()) != null) {
 					String entryName = ze.getName();
 					if (entryName.startsWith(directory)
-							&& entryName.endsWith(".class")) {
+							&& entryName.endsWith(".class") && !entryName.contains("$")) {
 						list.add(entryName.substring(0, entryName.length() - 6)
 								.replace("/", "."));
 					}
@@ -102,7 +104,7 @@ public class AutoPopulate {
 				String line;
 				try {
 					while ((line = reader.readLine()) != null) {
-						if (line.endsWith(".class")) {
+						if (line.endsWith(".class") && !line.contains("$")) {
 							list.add(packageName + line.substring(0, line.length() - 6));
 						}
 					}
@@ -114,7 +116,7 @@ public class AutoPopulate {
 				File file = new File(JGAAPConstants.JGAAP_BINDIR + directory);
 				String[] files = file.list();
 				for (String line : files) {
-					if (line.endsWith(".class")) {
+					if (line.endsWith(".class") && !line.contains("$")) {
 						list.add(packageName + line.substring(0, line.length() - 6));
 					}
 				}
@@ -128,11 +130,11 @@ public class AutoPopulate {
 				if (superClass.isInstance(o))
 					classes.add(o);
 			} catch (InstantiationException e) {
-				logger.warn("Problem instancing object", e);
+				logger.warn("Problem instancing object "+current, e);
 			} catch (IllegalAccessException e) {
-				logger.warn("Problem instancing object", e);
+				logger.warn("Problem instancing object "+current, e);
 			} catch (ClassNotFoundException e) {
-				logger.warn("Problem instancing object", e);
+				logger.warn("Problem instancing object "+current, e);
 			}
 		}
 		return classes;
