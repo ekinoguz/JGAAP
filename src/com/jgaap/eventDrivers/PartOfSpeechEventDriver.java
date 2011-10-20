@@ -17,6 +17,7 @@
  */
 package com.jgaap.eventDrivers;
 
+import com.jgaap.JGAAPConstants;
 import com.jgaap.backend.API;
 import com.jgaap.canonicizers.PunctuationSeparator;
 import com.jgaap.generics.Document;
@@ -24,7 +25,10 @@ import com.jgaap.generics.Event;
 import com.jgaap.generics.EventDriver;
 import com.jgaap.generics.EventSet;
 import com.knowledgebooks.nlp.fasttag.*;
+
+import java.io.IOException;
 import java.util.*;
+import edu.stanford.nlp.tagger.maxent.MaxentTagger;
 
 /**
  * This changes words into their parts of speech in a document. This does not
@@ -77,6 +81,30 @@ public class PartOfSpeechEventDriver extends EventDriver {
 		}
 		return es;
 
+	}
+
+	public EventSet testCreateEventSet(Document doc){
+		EventSet es = new EventSet(doc.getAuthor());
+
+		//Convert es words to parts of speech
+		String text = new String(doc.getProcessedText());
+		try {
+			MaxentTagger tagger = new MaxentTagger(JGAAPConstants.JGAAP_LIBDIR+"left3words-wsj-0-18.tagger");
+			String taggedString = tagger.tagString(text);
+			String[] pos = taggedString.split(" ");
+			for(int i = 0; i < pos.length; i++){
+				es.addEvent(new Event(pos[i].split("/")[1]));
+				//es.addEvent(new Event(pos[i]));
+			}
+			return es;
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 }

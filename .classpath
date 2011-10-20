@@ -28,5 +28,6 @@
 	<classpathentry kind="lib" path="lib/external/weka.jar"/>
 	<classpathentry kind="lib" path="lib/external/log4j-1.2.16.jar"/>
 	<classpathentry kind="lib" path="lib/external/WordSegment.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Amanda/workspace/JGAAP/lib/external/stanford-postagger-2011-09-14.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

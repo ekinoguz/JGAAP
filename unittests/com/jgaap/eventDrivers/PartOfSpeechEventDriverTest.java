@@ -32,7 +32,8 @@ import com.jgaap.generics.EventSet;
 
 /**
  * @author darrenvescovi
- *
+ *  
+ *	http://www.comp.leeds.ac.uk/amalgam/tagsets/upenn.html
  */
 public class PartOfSpeechEventDriverTest {
 
@@ -41,72 +42,85 @@ public class PartOfSpeechEventDriverTest {
 	 */
 	@Test
 	public void testCreateEventSetDocumentSet() {
-			System.out.println("Test Started");
-		 	Document doc = new Document();
-		    doc.readStringText("Today the fox jumped over the lazy dog "
-		    		+"While the fox jumped over the lazy dog a cat ran under a truck "
-		    		+"The truck missed the cat and the lazy dog was not so lazy and caught the cat");
-		    
-		    EventSet sampleSet = new PartOfSpeechEventDriver().createEventSet(doc);
-		    System.out.println(sampleSet.size());
-		    
-		    
-		    EventSet expectedSet = new EventSet();
-		    Vector<Event> tmp = new Vector<Event>();
-		    tmp.add(new Event("NN"));
-		    tmp.add(new Event("DT"));
-		    tmp.add(new Event("NN"));
-		    tmp.add(new Event("VBD"));
-		    tmp.add(new Event("IN"));
-		    tmp.add(new Event("DT"));
-		    tmp.add(new Event("JJ"));
-		    tmp.add(new Event("NN"));
-		    
-		    tmp.add(new Event("IN"));
-		    tmp.add(new Event("DT"));
-		    tmp.add(new Event("NN"));
-		    tmp.add(new Event("VBD"));
-		    tmp.add(new Event("IN"));
-		    tmp.add(new Event("DT"));
-		    tmp.add(new Event("JJ"));
-		    tmp.add(new Event("NN"));
-		    tmp.add(new Event("DT"));
-		    tmp.add(new Event("NN"));
-		    tmp.add(new Event("VBD"));//
-		    tmp.add(new Event("IN"));
-		    tmp.add(new Event("DT"));
-		    tmp.add(new Event("NN"));
-		   
-		    tmp.add(new Event("DT"));
-		    tmp.add(new Event("NN"));
-		    tmp.add(new Event("VBD"));//
-		    tmp.add(new Event("DT"));
-		    tmp.add(new Event("NN"));
-		    tmp.add(new Event("CC"));
-		    tmp.add(new Event("DT"));
-		    tmp.add(new Event("JJ"));
-		    tmp.add(new Event("NN"));
-		    tmp.add(new Event("VBD")); //33
-		    tmp.add(new Event("RB"));
-		    tmp.add(new Event("RB"));
-		    tmp.add(new Event("JJ"));
-		    tmp.add(new Event("CC"));
-		    tmp.add(new Event("VBN"));
-		    tmp.add(new Event("DT"));
-		    tmp.add(new Event("NN"));
-		    
+		System.out.println("Test Started");
+		Document doc = new Document();
+		String text = "Today the fox jumped over the lazy dog, "
+			+"while the fox jumped over the lazy dog a cat ran under a truck.  "
+			+"The truck missed the cat: the lazy dog wasn't so lazy and caught the cat";
+		doc.readStringText(text);
+		//System.out.println("Sample text:\n"+text);
 
-		     expectedSet.addEvents(tmp);
-		     
-		     for(int i=0; i<sampleSet.size(); i++)
-			    {
-			    	System.out.println(sampleSet.eventAt(i).toString()+" "+expectedSet.eventAt(i).toString());
-			    	System.out.println(sampleSet.eventAt(i).toString().equals(expectedSet.eventAt(i).toString()));
-			    }
-		     System.out.println(expectedSet.size());
-		     
-		     
-			    assertTrue(expectedSet.equals(sampleSet));
+		EventSet sampleSet = new PartOfSpeechEventDriver().testCreateEventSet(doc);
+		//System.out.println(sampleSet.size());
+
+		EventSet expectedSet = new EventSet();
+		expectedSet.addEvent(new Event("NN"));
+		expectedSet.addEvent(new Event("DT"));
+		expectedSet.addEvent(new Event("NN"));
+		expectedSet.addEvent(new Event("VBD"));
+		expectedSet.addEvent(new Event("IN"));
+		expectedSet.addEvent(new Event("DT"));
+		expectedSet.addEvent(new Event("JJ"));
+		expectedSet.addEvent(new Event("NN"));
+		expectedSet.addEvent(new Event(","));
+
+		expectedSet.addEvent(new Event("IN"));
+		expectedSet.addEvent(new Event("DT"));
+		expectedSet.addEvent(new Event("NN"));
+		expectedSet.addEvent(new Event("VBD"));
+		expectedSet.addEvent(new Event("IN"));
+		expectedSet.addEvent(new Event("DT"));
+		expectedSet.addEvent(new Event("JJ"));
+		expectedSet.addEvent(new Event("NN"));
+		expectedSet.addEvent(new Event("DT"));
+		expectedSet.addEvent(new Event("NN"));
+		expectedSet.addEvent(new Event("VBD"));//
+		expectedSet.addEvent(new Event("IN"));
+		expectedSet.addEvent(new Event("DT"));
+		expectedSet.addEvent(new Event("NN"));
+		expectedSet.addEvent(new Event("."));
+
+		expectedSet.addEvent(new Event("DT"));
+		expectedSet.addEvent(new Event("NN"));
+		expectedSet.addEvent(new Event("VBD"));//
+		expectedSet.addEvent(new Event("DT"));
+		expectedSet.addEvent(new Event("NN"));
+		expectedSet.addEvent(new Event(":"));
+		expectedSet.addEvent(new Event("DT")); //the
+		expectedSet.addEvent(new Event("JJ")); //lazy
+		expectedSet.addEvent(new Event("NN")); //dog
+		expectedSet.addEvent(new Event("VBD")); //was
+		expectedSet.addEvent(new Event("RB")); //n't
+		expectedSet.addEvent(new Event("RB")); //so
+		expectedSet.addEvent(new Event("JJ")); //lazy
+		expectedSet.addEvent(new Event("CC")); //and
+		expectedSet.addEvent(new Event("VBD")); //caught : Changed from VBN
+		expectedSet.addEvent(new Event("DT")); //the
+		expectedSet.addEvent(new Event("NN")); //cat
+
+		//Print out just the classified parts of speech
+		/*System.out.println("Parts of Speech:");
+		for(Event e : sampleSet){
+			System.out.print(e+" ");
+		}
+		System.out.println();*/
+
+		//Print out events which do not match
+		/*if(expectedSet.size() == sampleSet.size()){
+			for(int i = 0; i < expectedSet.size(); i++){
+				if(!expectedSet.eventAt(i).equals(sampleSet.eventAt(i))){
+					System.out.println("Events at "+i+" do not equal: " + expectedSet.eventAt(i) + " and " + sampleSet.eventAt(i));
+				}
+			}
+		}*/
+
+		//Print out the pair of classified parts of speech and the expected part of speech
+		/*System.out.println("Expected and Classified");
+		for(int i = 0; i < expectedSet.size(); i++){
+			System.out.println("Events at "+i+": " + expectedSet.eventAt(i) + " and " + sampleSet.eventAt(i));
+		}*/
+
+		assertTrue(expectedSet.equals(sampleSet));
 	}
 
 }
