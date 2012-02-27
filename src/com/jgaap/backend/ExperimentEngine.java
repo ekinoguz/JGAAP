@@ -166,7 +166,7 @@ public class ExperimentEngine {
 									.getUnknownDocuments();
 							StringBuffer buffer = new StringBuffer();
 							for (Document unknown : unknowns) {
-								buffer.append(unknown.getFormattedResult(analysisDriver, eventDriver));
+								buffer.append(unknown.getFormattedResult(analysisDriver));
 							}
 							Utils.saveFile(fileName, buffer.toString());
 						} catch (Exception e) {

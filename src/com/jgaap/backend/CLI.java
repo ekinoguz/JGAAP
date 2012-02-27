@@ -202,7 +202,7 @@ public class CLI {
 			List<Document> unknowns = api.getUnknownDocuments();
 			StringBuffer buffer = new StringBuffer();
 			for (Document unknown : unknowns) {
-				buffer.append(unknown.getFormattedResult(analysisDriver, eventDriver));
+				buffer.append(unknown.getFormattedResult(analysisDriver));
 			}
 			String saveFile = cmd.getOptionValue('s');
 			if (saveFile == null) {

@@ -64,7 +64,7 @@ public class Automike {
 				
 				for(Document document : documents){
 					Statement storeResultStatement = connection.createStatement();
-					List<Pair<String, Double>> results = document.getRawResult(analysisDriver, eventDriver);
+					List<Pair<String, Double>> results = document.getRawResult(analysisDriver);
 					boolean correct = results.get(0).getFirst().equalsIgnoreCase(document.getAuthor());
 					String title = document.getTitle();
 					

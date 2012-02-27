@@ -24,6 +24,8 @@ import javax.swing.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map.Entry;
+import java.util.Set;
 
 /**
  * A class of things-that-can-take-(label:value)-parameters.
@@ -34,20 +36,20 @@ import java.util.List;
 public class Parameterizable {
 
     /** Parameters are stored using pairs of Strings in a HashMap */
-    private HashMap<String, String> Parameters;
+    private HashMap<String, String> parameters;
 
     /** Store parameter GUI settings representations (label, dropdown box pair) */
     private List<Pair<JLabel, JComboBox>> paramGUI;
 
     /** Construct new Parameterizable with empty set */
     public Parameterizable() {
-        Parameters = new HashMap<String, String>();
+        parameters = new HashMap<String, String>();
         paramGUI = new ArrayList<Pair<JLabel, JComboBox>>();
     }
 
     /** Removes all label and their associated values */
     public void clearParameterSet() {
-        Parameters.clear();
+        parameters.clear();
     }
 
     /**
@@ -57,7 +59,7 @@ public class Parameterizable {
      *            the label to set
      */
     public void deleteParameter(String label) {
-        Parameters.remove(label);
+        parameters.remove(label);
     }
 
     /**
@@ -68,8 +70,8 @@ public class Parameterizable {
      * @return the appropriate value stored in the parameter set
      */
     public String getParameter(String label) {
-        if (Parameters.containsKey(label.toLowerCase())) {
-            return Parameters.get(label.toLowerCase());
+        if (parameters.containsKey(label.toLowerCase())) {
+            return parameters.get(label.toLowerCase());
         } else {
             return "";
         }
@@ -84,7 +86,7 @@ public class Parameterizable {
      *            the (double) value to set the label to
      */
     public void setParameter(String label, double value) {
-        Parameters.put(label.toLowerCase(), String.valueOf(value));
+        parameters.put(label.toLowerCase(), String.valueOf(value));
     }
 
     /**
@@ -96,7 +98,7 @@ public class Parameterizable {
      *            the (integer) value to set the label to
      */
     public void setParameter(String label, int value) {
-        Parameters.put(label.toLowerCase(), String.valueOf(value));
+        parameters.put(label.toLowerCase(), String.valueOf(value));
     }
 
     // do we need things that return Integers and so forth?
@@ -110,7 +112,7 @@ public class Parameterizable {
      *            the (long) value to set the label to
      */
     public void setParameter(String label, long value) {
-        Parameters.put(label.toLowerCase(), String.valueOf(value));
+        parameters.put(label.toLowerCase(), String.valueOf(value));
     }
 
     /**
@@ -122,9 +124,13 @@ public class Parameterizable {
      *            the value to set the label to
      */
     public void setParameter(String label, String value) {
-        Parameters.put(label.toLowerCase(), value);
+        parameters.put(label.toLowerCase(), value);
     }
 
+    public Set<Entry<String, String>> getParameters(){
+    	return parameters.entrySet();
+    }
+    
     public void addParams(String paramName, String displayName, String defaultValue, String[] possibleValues, boolean editable) {
         JLabel label = new JLabel();
         JComboBox box = new JComboBox();

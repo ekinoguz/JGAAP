@@ -1651,8 +1651,7 @@ public class JGAAP_UI_MainForm extends javax.swing.JFrame {
             StringBuffer buffer = new StringBuffer();
             for (Document unknown : unknowns) {
             	for(AnalysisDriver analysisDriver : JGAAP_API.getAnalysisDrivers())
-            		for(EventDriver eventDriver : JGAAP_API.getEventDrivers())
-            			buffer.append(unknown.getFormattedResult(analysisDriver, eventDriver));
+            		buffer.append(unknown.getFormattedResult(analysisDriver));
             }
             //ResultsPage.DisplayResults(buffer.toString());
             ResultsPage.addResults(buffer.toString());

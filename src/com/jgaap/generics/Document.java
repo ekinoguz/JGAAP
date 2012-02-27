@@ -43,6 +43,7 @@ public class Document extends Parameterizable {
 	private Language language;
 	private List<Canonicizer> canonicizers;
 	private Map<EventDriver, EventSet> eventSets;
+	private Map<AnalysisDriver, List<Pair<String, Double>>> results;
 	private boolean failed = false;
 	private boolean processed = false;
 	
@@ -332,19 +333,8 @@ public class Document extends Parameterizable {
 	 * @param eventDriver
 	 * @param list
 	 */
-	public void addResult(AnalysisDriver analysisDriver,
-			EventDriver eventDriver, List<Pair<String, Double>> list) {
-		eventSets.get(eventDriver).addResults(analysisDriver, list);
-	}
-	
-	/**
-	 * 
-	 * @param analysisDriver
-	 * @param eventDriver
-	 * @return
-	 */
-	public List<Pair<String, Double>> getRawResult(AnalysisDriver analysisDriver, EventDriver eventDriver){
-		return eventSets.get(eventDriver).getResult(analysisDriver);
+	public void addResult(AnalysisDriver analysisDriver, List<Pair<String, Double>> list) {
+		results.put(analysisDriver, list);
 	}
 	
 	/**
@@ -353,7 +343,7 @@ public class Document extends Parameterizable {
 	 * @param eventDriver
 	 * @return
 	 */
-	public String getFormattedResult(AnalysisDriver analysisDriver, EventDriver eventDriver) {
+	public String getFormattedResult(AnalysisDriver analysisDriver) {
 		StringBuilder buffer = new StringBuilder();
 		buffer.append(getTitle() + " ");
 		buffer.append(getFilePath() + "\n");
@@ -366,12 +356,23 @@ public class Document extends Parameterizable {
 			}
 		}
 		buffer.append("\n");
-		buffer.append("Analyzed by " + analysisDriver.displayName() + " using "
-				+ eventDriver.displayName() + " as events\n");
+		buffer.append("Events:\n");
+		for(EventDriver eventDriver : eventSets.keySet()){
+			buffer.append("\t").append(eventDriver.displayName());
+			for(Entry<String, String> entry : eventDriver.getParameters()){
+				buffer.append(" ").append(entry.getKey()).append(": ").append(entry.getValue());
+			}
+		}
+		buffer.append("\n");
+		buffer.append("Analysis: " + analysisDriver.displayName()); 
+		for(Entry<String, String> entry : analysisDriver.getParameters()){
+			buffer.append(" ").append(entry.getKey()).append(": ").append(entry.getValue());
+		}
+		buffer.append("\n");
 		int count = 0; // Keeps a relative count (adjusted for ties)
 		int fullCount = 0; // Keeps the absolute count (does not count ties)
 		Double lastResult = Double.NaN;
-		List<Pair<String, Double>> results = getRawResult(analysisDriver, eventDriver);
+		List<Pair<String, Double>> results = this.results.get(analysisDriver);
 		if(results == null){
 			return null;
 		}
@@ -389,56 +390,39 @@ public class Document extends Parameterizable {
 	}
 
 	/**
+	 * Generates and Returns a formatted report of all results
+	 * 
+	 * @deprecated please use getFormattedResults()
+	 * @return all results of the experiment
+	 */
+	@Deprecated
+	public String getResult(){
+		return getFormattedResults();
+	}
+	
+	public void clearResults(){
+		results.clear();
+	}
+	
+	/**
 	 * Generates and returns a formatted report of all results 
 	 * @return
 	 */
-	public String getResult() {
+	public String getFormattedResults() {
 		StringBuilder buffer = new StringBuilder();
-		Set<EventDriver> eventDrivers = eventSets.keySet();
-		Set<AnalysisDriver> analysisDrivers = null;
-		for(EventDriver eventDriver : eventDrivers){
-			if(analysisDrivers == null){
-				analysisDrivers = eventSets.get(eventDriver).getResults().keySet();
-			}
-			for(AnalysisDriver analysisDriver : analysisDrivers){
-				buffer.append(getFormattedResult(analysisDriver, eventDriver));
-			}
+		Set<AnalysisDriver> analysisDrivers = results.keySet();
+		for (AnalysisDriver analysisDriver : analysisDrivers) {
+			buffer.append(getFormattedResult(analysisDriver));
 		}
 		return buffer.toString();
 	}
-
-	/**
-	 * @deprecated please use getRawResults
-	 * 
-	 * @return
-	 */
-	@Deprecated
-	public Map<AnalysisDriver, Map<EventDriver, List<Pair<String, Double>>>> getResults() {
-		Map<AnalysisDriver, Map<EventDriver, List<Pair<String, Double>>>> results = new HashMap<AnalysisDriver, Map<EventDriver,List<Pair<String,Double>>>>();
-		for(Entry<EventDriver, EventSet> entry : eventSets.entrySet()){
-			Map<AnalysisDriver, List<Pair<String, Double>>> result = entry.getValue().getResults();
-			for(Entry<AnalysisDriver, List<Pair<String, Double>>> eventSetEntry : result.entrySet()){
-				Map<EventDriver,  List<Pair<String, Double>>> tmp = results.get(eventSetEntry.getKey());
-				if(tmp == null){
-					tmp = new HashMap<EventDriver, List<Pair<String,Double>>>();
-					results.put(eventSetEntry.getKey(), tmp);
-				}
-				tmp.put(entry.getKey(), eventSetEntry.getValue());
-			}
-		}
-		return results;
+	
+	public List<Pair<String, Double>> getRawResult(AnalysisDriver analysisDriver){
+		return results.get(analysisDriver);
 	}
 	
-	public Map<EventDriver, Map<AnalysisDriver, List<Pair<String, Double>>>> getRawResults() { 
-		Map<EventDriver, Map<AnalysisDriver, List<Pair<String, Double>>>> results = new HashMap<EventDriver, Map<AnalysisDriver,List<Pair<String,Double>>>>();
-		for(Entry<EventDriver, EventSet> entry : eventSets.entrySet()){
-			results.put(entry.getKey(), entry.getValue().getResults());
-		}
+	public Map<AnalysisDriver, List<Pair<String, Double>>> getRawResults() { 		
 		return results;
-	}
-
-	@Deprecated
-	public void clearResults() {
 	}
 
 	/**
