@@ -25,6 +25,7 @@ import javax.swing.text.EditorKit;
 import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.HTMLEditorKit;
 
+import org.apache.log4j.Logger;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.util.PDFTextStripper;
 import org.apache.poi.hwpf.HWPFDocument;
@@ -44,6 +45,8 @@ import org.apache.poi.xwpf.usermodel.XWPFDocument;
 
 class DocumentHelper {
 
+	private static Logger logger = Logger.getLogger(com.jgaap.generics.DocumentHelper.class); 
+	
 	static char[] loadDocument(String filepath, String charset) throws IOException, BadLocationException {
 		InputStream is;
 		int fileSize = -1;
@@ -170,7 +173,7 @@ class DocumentHelper {
 		char[] text = new char[length];
 		int status = reader.read(text);
 		if(status < length || reader.read() != -1)
-			throw new IOException("Document too large to load for processing");
+			logger.warn("Possibility Document too large to stor into memory or using utf-8 with utf-16 chars in it."); 
 		reader.close();
 		return text;
 	}
