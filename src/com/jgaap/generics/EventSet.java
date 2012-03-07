@@ -20,10 +20,8 @@
 package com.jgaap.generics;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 /**
@@ -44,8 +42,6 @@ public class EventSet implements Iterable<Event> {
     /** static ID number for the next EventSet created */
     private static int   gensym      = 0;
     
-    private Map<AnalysisDriver, List<Pair<String,Double>>> results = new HashMap<AnalysisDriver, List<Pair<String,Double>>>();
-
     private EventHistogram histogram = new EventHistogram();
     
     /** Creates a new, empty list of events. Will also include unique ID */
@@ -214,17 +210,5 @@ public class EventSet implements Iterable<Event> {
 
 	public Iterator<Event> iterator() {
 		return events.iterator();
-	}
-	
-	public void addResults(AnalysisDriver analysisDriver, List<Pair<String, Double>> result){
-		results.put(analysisDriver, result);
-	}
-	
-	public Map<AnalysisDriver, List<Pair<String, Double>>> getResults(){
-		return results;
-	}
-	
-	public List<Pair<String, Double>> getResult(AnalysisDriver analysisDriver){
-		return results.get(analysisDriver);
 	}
 }
