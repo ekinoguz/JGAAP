@@ -80,7 +80,7 @@ public class JGAAPConstants {
 	}
 
 	public static final String JGAAP_RESOURCE_PACKAGE = "/com/jgaap/resources/";
-
+	
 	/**
 	 * Java Prefix for different types of object collections
 	 */

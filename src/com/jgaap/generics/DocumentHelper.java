@@ -44,6 +44,8 @@ import org.apache.poi.xwpf.usermodel.XWPFDocument;
  */
 
 class DocumentHelper {
+	
+	static Logger logger = Logger.getLogger(com.jgaap.generics.DocumentHelper.class);
 
 	private static Logger logger = Logger.getLogger(com.jgaap.generics.DocumentHelper.class); 
 	
