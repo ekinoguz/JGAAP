@@ -2704,7 +2704,7 @@ public class JGAAP_UI_MainForm extends javax.swing.JFrame {
         DocumentsPanel_UnknownAuthorsTable.getModel().addTableModelListener(new TableModelListener() {
             public void tableChanged(TableModelEvent e)
             {
-                System.out.println("Unknown Documents Table Row: " + e.getFirstRow() + ", Column: " + e.getColumn());
+                //System.out.println("Unknown Documents Table Row: " + e.getFirstRow() + ", Column: " + e.getColumn());
                 if ((e.getColumn() >= 0) && (e.getFirstRow() >= 0))
                 {
                     UnknownDocumentList = JGAAP_API.getUnknownDocuments();
